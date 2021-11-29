@@ -1,1 +1,14 @@
- 3  4 32 -
+total 112
+-rw-rw-r-- 1 miriam miriam     0 nov 26 21:54 erros.txt
+-rwxrwxr-x 1 miriam miriam 16960 nov 26 21:38 ex1
+-rw-rw-r-- 1 miriam miriam   681 nov 26 21:50 ex1.c
+-rwxrwxr-x 1 miriam miriam 17088 nov 26 21:48 ex2
+-rw-rw-r-- 1 miriam miriam   761 nov 26 21:50 ex2.c
+-rwxrwxr-x 1 miriam miriam 16824 nov 26 21:55 ex3
+-rw-rw-r-- 1 miriam miriam   623 nov 26 21:55 ex3.c
+-rwxrwxr-x 1 miriam miriam 16920 nov 29 15:04 ex4
+-rw-rw-r-- 1 miriam miriam  1273 nov 29 15:04 ex4.c
+-rw-rw-r-- 1 miriam miriam  1422 nov 29 14:41 header.c
+-rw-rw-r-- 1 miriam miriam    24 nov 29 14:35 header.h
+-rw-rw-r-- 1 miriam miriam    32 nov 26 21:55 passwords.txt
+-rw-rw-r-- 1 miriam miriam     9 nov 29 15:05 saida.txt
