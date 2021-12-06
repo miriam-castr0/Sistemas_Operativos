@@ -21,7 +21,7 @@ int main(){
 
         close(pd[1]);
 		dup2(pd[0], 0);
-        while(read(0,&buf,sizeof(buf))> 0 && buf!=0){
+        while((n=read(0,&buf,sizeof(buf)))> 0){
 			execlp("wc","wc",NULL);
 	    }
 		
@@ -29,7 +29,7 @@ int main(){
     }
     else{
         dup2(pd[1], 1);
-        while((n=read(0, &buf, sizeof(buf)))>0 && buf[0]!='q')
+        while((n=read(0, &buf, sizeof(buf)))>0)
             write(1, buf, n);
         close(pd[1]);
         wait(NULL);
