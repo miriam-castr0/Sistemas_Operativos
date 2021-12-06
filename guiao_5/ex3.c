@@ -20,10 +20,10 @@ int main(){
     if(fork()==0){
 
         close(pd[1]);
-		dup2(pd[0], 0);
-        while((n=read(0,&buf,sizeof(buf)))> 0){
-			execlp("wc","wc",NULL);
-	    }
+        close(0);
+		dup(pd[0]);
+		execlp("wc","wc",NULL);
+
 		
         _exit(-1);
     }
@@ -31,8 +31,6 @@ int main(){
         dup2(pd[1], 1);
         while((n=read(0, &buf, sizeof(buf)))>0)
             write(1, buf, n);
-        close(pd[1]);
-        wait(NULL);
     }
 
 
