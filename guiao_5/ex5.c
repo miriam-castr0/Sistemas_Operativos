@@ -6,58 +6,69 @@
 #include <stdlib.h>
 #include <string.h>
 
+int main(int argc, char **argv)
+{
 
-int main(int argc, char** argv){
-
-    
-	int pd[2];
     int pd1[2];
     int pd2[2];
-	pipe(pd);
-    pipe(pd1);
-    pipe(pd2);
+    int pd3[2];
 
-	if(fork()){
-        if(fork()){
-            if(fork()){
-                close(pd[0]);
-                dup2(pd[1], 1);
-                execlp("grep", "grep", "-v", "ˆ#", "/etc/passwd", NULL);
+    pipe(pd3);
+
+    if (fork())
+    {
+         pipe(pd2);
+        if (fork())
+        {
+            pipe(pd1);
+            if (fork())
+            {
+                dup2(pd1[1], 1);
+                close(pd1[0]);
+                close(pd1[1]);
+                execlp("grep", "grep", "-v", "^#", "/etc/passwd", NULL);
+                perror("error:");
                 _exit(-1);
-
             }
-            else{
+            else
+            {
                 wait(NULL);
-                dup2(pd[0], 0);
-                dup2(pd[1], 1);
-                execlp("cut", "cut", "-f7", "-d:", NULL );
+                dup2(pd1[0], 0);
+                dup2(pd2[1], 1);
+                close(pd1[0]);
+                close(pd1[1]);
+                close(pd2[0]);
+                close(pd2[1]);
+                execlp("cut", "cut", "-f7", "-d:", NULL);
+                perror("error:");
+                _exit(-1);
             }
-
         }
-        else{
+        else
+        {
             wait(NULL);
             wait(NULL);
-            dup2(pd[0], 0);
-            dup2(pd[1], 1);
+            dup2(pd2[0], 0);
+            dup2(pd3[1], 1);
+            close(pd2[0]);
+            close(pd2[1]);
+            close(pd3[0]);
+            close(pd3[1]);
             execlp("uniq", "uniq", NULL);
-        
-
+            perror("error:");
+            _exit(-1);
         }
-       
     }
-     else{
-            wait(NULL);
-            wait(NULL);
-            wait(NULL);
-            dup2(pd[0], 0);
-            dup2(pd[1], 1);
-            execlp("wc", "wc", "-l", NULL);
-        
-
-        }
-	return 0;
-
-
-
-
+    else
+    {
+        wait(NULL);
+        wait(NULL);
+        wait(NULL);
+        dup2(pd3[0], 0);
+        close(pd3[0]);
+        close(pd3[1]);
+        execlp("wc", "wc", "-l", NULL);
+        perror("error:");
+    }
+    return 0;
 }
