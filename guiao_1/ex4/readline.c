@@ -3,68 +3,49 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-int readln(int filedes, void *buf, int nbyte)
+
+ssize_t readln(int fd, char *buf, ssize_t nbyte)
 {
-    char *buf2 = (char *)buf; //buffer
-    int i = 0;                ///contadores
-    int j = 0;
-
-    while ((j = read(filedes, buf2, nbyte)) != -1) //enquanto houver algo para ler lê
+    int n, i, j = 0;
+    while ((n = read(fd, buf, nbyte)) > 0)
     {
-        if (*buf2 == '\n') //se clicar enter
+        for (j = 0; j < n; j++)
         {
-
-            return i - 1;
-        }
-        else //se
-        {
-            i++; //incrementa numero de linhas
+            if (buf[j] == '\n')
+            {
+                break;
+            }
+            else
+                i++;
         }
     }
+    /*int offset = i - nbyte;
+    int w = lseek(fd, 0, SEEK_CUR);
+    puts("\n");
+    puts("offset");
+    printf("%d\n", w);*/
 
-    return -1;
+    return i;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-    char buf[20];
-    int nbyte = 1;
-    //int i=readln(0,buf,nbyte);
-
-    int fileID;
-    char buff[20];
-    int count;
-    int lineCount = 0;
-    char lineNum[8], lastChar = '\n';
-    int x, y;
-    char *charPtr;
-    for (x = 1; x < argc; x++)
+    int n = 1;
+    int fd;
+    char buffer[20];
+    if (argc > 1)
     {
-        fileID = open(argv[1], O_RDONLY);
-
-        count = 20;
-
-        while (count == 20)
+        fd = open(argv[1], O_RDONLY);
+        if (fd == -1)
         {
-            count = read(fileID, buff, 20);
-
-            charPtr = buff;
-            for (y = 0; y < count; y++)
-            {
-                if (lastChar == '\n')
-                {
-                    lineCount++;
-                    sprintf(lineNum, "\t%d  ", lineCount);
-                    write(1, lineNum, strlen(lineNum));
-                }
-
-                lastChar = *charPtr;
-                write(1, charPtr++, 1);
-            }
+            perror("Erro a abrir ficheiro");
         }
-
-        close(fileID);
     }
+    while ((n = readln(fd, buffer, 20)) > 0)
+    {
 
+        write(1, buffer, n);
+    }
+    close(fd);
     return 0;
 }
