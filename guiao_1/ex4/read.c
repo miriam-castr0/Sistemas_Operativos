@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX 1
+#define MAX 256
 
 int charcount = 0;
 
