@@ -4,33 +4,32 @@
 #include <string.h>
 #include <stdlib.h>
 
+int charcount=0;
+
 ssize_t readln(int fd, char *buf, ssize_t nbyte)
 {
-    int n, i, j = 0;
+    int n, i = 0;
+   
     while ((n = read(fd, buf, nbyte)) > 0)
-    {
-        for (j = 0; j < n; j++)
-        {
-            if (buf[j] == '\n')
-            {
-                break;
-            }
-            else
-                i++;
+    {  
+        while(buf[i]!='\n'&&i<sizeof(buf))
+        {   
+            i++;
+            charcount++;
         }
+        i++;
+        charcount++;
+        break;
     }
-    /*int offset = i - nbyte;
-    int w = lseek(fd, 0, SEEK_CUR);
-    puts("\n");
-    puts("offset");
-    printf("%d\n", w);*/
+    lseek(fd, charcount, SEEK_SET);
+    
 
     return i;
 }
 
 int main(int argc, char *argv[])
 {
-    int n = 1;
+    int n = 0;
     int fd;
     char buffer[20];
     if (argc > 1)
