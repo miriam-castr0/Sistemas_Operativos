@@ -10,11 +10,18 @@
 int main(int argc, char**argv){
 
     char c;
-    int f=open("fifo", O_RDONLY);
-    int f1=open("log.txt", O_CREAT | O_WRONLY, 0666);
+    int n;
+    //int f=open("fifo", O_RDONLY);
+    int f1=open("log.txt", O_CREAT | O_RDONLY, 0666);
 
-    while(read(f, &c, 1)!=0)
-        write(f1, &c, 1);
+    /*while((n=read(f, &c, 1))!=0){
+        printf("%d\n", n);
+        puts("ou");
+        write(f1, &c, 1);}*/
+
+    while(read(f1,&c, 1)!=0){
+        write(1, &c, 1);
+    }
 
 
 
