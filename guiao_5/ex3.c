@@ -22,6 +22,7 @@ int main(){
         close(pd[1]);
         close(0);
 		dup(pd[0]);
+        //dup2(pd[0], 0);
 		execlp("wc","wc",NULL);
 
 		
